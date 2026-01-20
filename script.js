@@ -1,59 +1,57 @@
 console.log("script.js is running");
 
+const DEFAULT_SIZE = 16;
+
 const grid = document.querySelector("#grid");
 const sizeBtn = document.querySelector("#sizeBtn");
+const resetBtn = document.querySelector("#resetBtn");
 
-// Build/rebuild the grid
+// track the current grid size so reset keeps it
+let currentSize = DEFAULT_SIZE;
+
 function createGrid(size) {
-  // clear existing squares
-  grid.innerHTML = "";
+  grid.replaceChildren();
 
-  // compute square size based on current grid width
-  const gridSizePx = grid.clientWidth; // e.g. 800 from your CSS
+  const gridSizePx = grid.clientWidth;
   const squareSize = gridSizePx / size;
 
-  // create size * size squares
   for (let i = 0; i < size * size; i++) {
     const square = document.createElement("div");
     square.classList.add("square");
-
-    // override the CSS hardcoded /16 with an inline size
     square.style.width = `${squareSize}px`;
     square.style.height = `${squareSize}px`;
-
     grid.appendChild(square);
   }
 }
 
-// hover behavior using event delegation
 function hover(event) {
   if (event.target.classList.contains("square")) {
     event.target.style.backgroundColor = "black";
   }
 }
 
-// button click handler
 function changeSize() {
   let number = prompt("What size grid? (1–100)");
-
-  if (number === null) return; // user hit Cancel
+  if (number === null) return;
 
   number = Number(number);
 
-  // validate
   if (!Number.isInteger(number) || number < 1 || number > 100) {
     alert("Please enter a whole number between 1 and 100.");
     return;
   }
 
-  createGrid(number);
+  currentSize = number;
+  createGrid(currentSize);
 }
 
-// attach ONE listener to the grid
-grid.addEventListener("mouseover", hover);
+function reset() {
+  createGrid(currentSize);
+}
 
-// attach button listener
+grid.addEventListener("mouseover", hover);
 sizeBtn.addEventListener("click", changeSize);
+resetBtn.addEventListener("click", reset);
 
 // initial grid
-createGrid(16);
+createGrid(currentSize);
