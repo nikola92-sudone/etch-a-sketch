@@ -1,0 +1,20 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 802px;  /* 800px for squares + 2px for borders */
+  height: 802px; /* 800px for squares + 2px for borders */
+  border: 1px solid black;
+  align-content: flex-start; 
+}
+
+.square {
+  flex: 0 0 calc(800px / 16);
+  height: calc(800px / 16);
+  border: 1px solid black;
+}
